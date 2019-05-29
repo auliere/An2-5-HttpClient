@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // add this line if you don't have access to
 // index.html and you want to set base tag
@@ -15,6 +15,7 @@ import { TasksModule } from './tasks/tasks.module';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
+import { MyInterceptor } from './core/interceptors/my.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +33,11 @@ import { AppComponent } from './app.component';
     // add this line if you don't have access to
     // index.html and you want to set base tag
     // { provide: APP_BASE_HREF, useValue: '/' }
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MyInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
