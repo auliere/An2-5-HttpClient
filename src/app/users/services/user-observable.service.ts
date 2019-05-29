@@ -1,17 +1,17 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject } from "@angular/core";
 import {
   HttpClient,
   HttpHeaders,
   HttpResponse,
   HttpErrorResponse
-} from '@angular/common/http';
+} from "@angular/common/http";
 
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, throwError } from "rxjs";
+import { catchError } from "rxjs/operators";
 
-import { UserModel } from './../models/user.model';
-import { UsersAPI } from './../users.config';
-import { UsersServicesModule } from '../users-services.module';
+import { UserModel } from "./../models/user.model";
+import { UsersAPI } from "./../users.config";
+import { UsersServicesModule } from "../users-services.module";
 
 @Injectable({
   providedIn: UsersServicesModule
@@ -28,7 +28,10 @@ export class UserObservableService {
       .pipe(catchError(this.handleError));
   }
 
-  getUser(id: number) {}
+  getUser(id: number): Observable<UserModel> {
+    const url = `${this.usersUrl}/${id}`;
+    return this.http.get<UserModel>(url).pipe(catchError(this.handleError));
+  }
 
   updateUser(user: UserModel) {}
 
