@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Location } from "@angular/common";
 
@@ -6,7 +6,11 @@ import { Location } from "@angular/common";
 import { Observable, Subscription } from "rxjs";
 import { pluck } from "rxjs/operators";
 
-import { DialogService, CanComponentDeactivate } from "./../../../core";
+import {
+  DialogService,
+  CanComponentDeactivate,
+  AutoUnsubscribe
+} from "./../../../core";
 import { UserModel } from "./../../models/user.model";
 import { UserObservableService } from "./../../services";
 
@@ -14,8 +18,8 @@ import { UserObservableService } from "./../../services";
   templateUrl: "./user-form.component.html",
   styleUrls: ["./user-form.component.css"]
 })
-export class UserFormComponent
-  implements OnInit, OnDestroy, CanComponentDeactivate {
+@AutoUnsubscribe()
+export class UserFormComponent implements OnInit, CanComponentDeactivate {
   user: UserModel;
   originalUser: UserModel;
 
@@ -73,11 +77,5 @@ export class UserFormComponent
     // Otherwise ask the user with the dialog service and return its
     // promise which resolves to true or false when the user decides
     return this.dialogService.confirm("Discard changes?");
-  }
-
-  ngOnDestroy(): void {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
   }
 }
