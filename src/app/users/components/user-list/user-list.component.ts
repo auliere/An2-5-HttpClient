@@ -53,6 +53,10 @@ export class UserListComponent implements OnInit {
 
   }
 
+  onDeleteUser(user: UserModel) {
+    this.users$ = this.userObservableService.deleteUser(user);
+  }
+
   isEdited(user: UserModel) {
     if (this.editedUser) {
       return user.id === this.editedUser.id;

@@ -7,7 +7,7 @@ import {
 } from "@angular/common/http";
 
 import { Observable, throwError } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { catchError, concatMap } from "rxjs/operators";
 
 import { UserModel } from "./../models/user.model";
 import { UsersAPI } from "./../users.config";
@@ -56,7 +56,11 @@ export class UserObservableService {
       .pipe(catchError(this.handleError));
   }
 
-  deleteUser(user: UserModel) {}
+  deleteUser(user: UserModel): Observable<UserModel[]> {
+    const url = `${this.usersUrl}/${user.id}`;
+
+    return this.http.delete(url).pipe(concatMap(() => this.getUsers()));
+  }
 
   private handleError(err: HttpErrorResponse) {
     let errorMessage: string;
